@@ -7,18 +7,14 @@ export const initMongoConnection = async () => {
   let url = env("MONGODB_URL");
   const db = env("MONGODB_DB");
 
-  // URL'den port numarasını ve gereksiz prefix'leri temizle
-  url = url.replace(/^mongodb\+srv:\/\//, ''); // Eğer mongodb+srv:// varsa kaldır
-  url = url.replace(/:\d+$/, ''); // Port numarasını kaldır (örn: :27017)
-  url = url.replace(/\/.*$/, ''); // Eğer sonunda /database varsa kaldır
-
+  url = url.replace(/^mongodb\+srv:\/\//, ''); 
+  url = url.replace(/:\d+$/, ''); 
+  url = url.replace(/\/.*$/, ''); 
   const connectionString = `mongodb+srv://${user}:${password}@${url}/${db}?retryWrites=true&w=majority`;
 
   try {
     await mongoose.connect(connectionString);
     console.log('Mongo connection successfully established!');
-    console.log(`Connected to database: ${db}`);
-    console.log(`Connection string: mongodb+srv://${user}:***@${url}/${db}`);
   } catch (error) {
     console.error('MongoDB connection error:', error);
     throw error;
