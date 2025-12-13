@@ -11,6 +11,32 @@ const setupServer = () => {
   app.use(cors());
   app.use(express.json());
 
+  // Debug endpoint - MongoDB bilgilerini göster
+  app.get('/debug', async (req, res) => {
+    try {
+      const mongoose = (await import('mongoose')).default;
+      const db = mongoose.connection.db;
+      const collections = await db.listCollections().toArray();
+      const collectionNames = collections.map(c => c.name);
+      
+      // Her collection'daki doküman sayısını al
+      const collectionInfo = await Promise.all(
+        collectionNames.map(async (name) => {
+          const count = await db.collection(name).countDocuments();
+          return { name, count };
+        })
+      );
+      
+      res.json({
+        database: db.databaseName,
+        collections: collectionInfo,
+        connectionState: mongoose.connection.readyState,
+      });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   app.get('/contacts', getAllContactsController);
   app.get('/contacts/:contactId', getContactByIdController);
 

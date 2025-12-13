@@ -17,6 +17,8 @@ export const initMongoConnection = async () => {
   try {
     await mongoose.connect(connectionString);
     console.log('Mongo connection successfully established!');
+    console.log(`Connected to database: ${db}`);
+    console.log(`Connection string: mongodb+srv://${user}:***@${url}/${db}`);
   } catch (error) {
     console.error('MongoDB connection error:', error);
     throw error;
