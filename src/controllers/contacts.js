@@ -8,11 +8,11 @@ import {
 } from '../services/contact.js';
 
 export const getAllContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const result = await getAllContacts(req.query);
   res.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
-    data: contacts,
+    data: result,
   });
 };
 
