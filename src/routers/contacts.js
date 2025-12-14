@@ -13,10 +13,10 @@ import { contactSchema, contactUpdateSchema } from '../schemas/contactSchemas.js
 
 const router = express.Router();
 
-router.get('/', ctrlWrapper(getAllContactsController));
-router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
-router.post('/', validateBody(contactSchema), ctrlWrapper(createContactController));
-router.patch('/:contactId', isValidId, validateBody(contactUpdateSchema), ctrlWrapper(updateContactController));
-router.delete('/:contactId', isValidId, ctrlWrapper(deleteContactController));
+router.get('/contacts', ctrlWrapper(getAllContactsController));
+router.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
+router.post('/contacts', ctrlWrapper(createContactController));
+router.patch('/contacts/:contactId', ctrlWrapper(updateContactController));
+router.delete('/contacts/:contactId', ctrlWrapper(deleteContactController));
 
 export default router;
