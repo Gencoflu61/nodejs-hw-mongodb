@@ -13,7 +13,7 @@ const setupServer = () => {
   app.use(cors());
   app.use(express.json());
 
-  app.use('/contacts', contactsRouter);
+  app.use('/', contactsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
