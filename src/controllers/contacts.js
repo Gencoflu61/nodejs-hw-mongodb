@@ -9,6 +9,8 @@ import {
 
 
 export const createContactController = async (req, res) => {
+  console.log('User ID:', req.user._id, 'Type:', typeof req.user._id);
+  const userId = String(req.user._id);
   const contactData = {
     ...req.body,
     userId: req.user._id  

@@ -7,7 +7,7 @@ export const authenticate = async (req, res, next) => {
   if (!authHeader) {
     
     req.user = {
-      _id: 'test_user_id_no_token',
+      _id:  new mongoose.Types.ObjectId(),
       email: 'test@test.com'
     };
     return next();
