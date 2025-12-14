@@ -1,6 +1,7 @@
 import Contact from "../db/models/Contact.js";
 
-export const getAllContacts = async (query) => {
+export const getAllContacts = async (userId) => {
+  console.log('getAllContacts userId:', userId);
   const {
     page = 1,
     perPage = 10,
@@ -8,8 +9,7 @@ export const getAllContacts = async (query) => {
     sortOrder = 'asc',
     type,
     isFavourite,
-  } = query;
-
+  } = userId;
   const pageNumber = parseInt(page, 10);
   const perPageNumber = parseInt(perPage, 10);
   const skip = (pageNumber - 1) * perPageNumber;
@@ -21,6 +21,9 @@ export const getAllContacts = async (query) => {
   }
   if (isFavourite !== undefined) {
     filter.isFavourite = isFavourite === 'true';
+  }
+  if (userId) {
+    filter.userId = userId;
   }
 
   // Build sort
@@ -37,8 +40,8 @@ export const getAllContacts = async (query) => {
     .limit(perPageNumber);
 
   const totalPages = Math.ceil(totalItems / perPageNumber);
-
-  return {
+  
+  return  {
     data: contacts,
     page: pageNumber,
     perPage: perPageNumber,
@@ -46,6 +49,7 @@ export const getAllContacts = async (query) => {
     totalPages,
     hasPreviousPage: pageNumber > 1,
     hasNextPage: pageNumber < totalPages,
+    userId: userId
   };
 };
 
@@ -66,4 +70,7 @@ export const updateContact = async (contactId, updateData) => {
 
 export const deleteContact = async (contactId) => {
   return await Contact.findByIdAndDelete(contactId);
+};
+export const getAllContactsController = async (req, res) => {
+  return await Contact.getAllContacts(req.user._id); 
 };
