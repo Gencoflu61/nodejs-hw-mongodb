@@ -3,22 +3,25 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
   name: { 
     type: String, 
-    required: true 
+    required: [true, 'Name is required'] 
   },
-  email: {
-     type: String, 
-     unique: true, 
-     required: true 
-    },
+  email: { 
+    type: String, 
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
   password: { 
     type: String, 
-    required: true
-   }
+    required: [true, 'Password is required'],
+    minlength: 6
+  }
 }, {
   timestamps: { 
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-     }
+    createdAt: 'createdAt', 
+    updatedAt: 'updatedAt' 
+  }
 });
 
 export default mongoose.model('User', userSchema);

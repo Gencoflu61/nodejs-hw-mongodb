@@ -1,26 +1,45 @@
 import createError from 'http-errors';
+import jwt from 'jsonwebtoken';
+import Session from '../db/models/Session.js';
 
 export const authenticate = async (req, res, next) => {
   try {
-    console.log('🔐 Authenticate middleware çalıştı');
-    console.log('Authorization Header:', req.headers.authorization);
+    const authHeader = req.headers.authorization;
     
-    // ✅✅✅ TEST MODU: Geçici olarak her zaman başarılı olsun
-    // Bu sayede diğer kodları test edebiliriz
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw createError(401, 'Unauthorized - No token provided');
+    }
+    
+  
+    const token = authHeader.split(' ')[1];
+    
+   
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    
+    const session = await Session.findOne({
+      userId: decoded.userId,
+      accessToken: token,
+      accessTokenValidUntil: { $gt: new Date() }
+    });
+    
+    if (!session) {
+      throw createError(401, 'Access token expired');
+    }
+    
     req.user = {
-      _id: 'test_user_id_123',  // Test kullanıcı ID'si
-      email: 'test@test.com'
+      _id: decoded.userId,
+      email: decoded.email
     };
     
-    console.log('✅ Test user atandı:', req.user);
-    next(); // ✅ Bir sonraki middleware'e geç
-    
-    /*
-    // ❌❌❌ BUNU ŞİMDİLİK YORUM SATIRI YAPIN:
-    return next(createError(401, 'Authenticate çalışıyor - Token gerekli'));
-    */
-    
+    next();
   } catch (error) {
-    next(error);
+    if (error.name === 'TokenExpiredError') {
+      next(createError(401, 'Access token expired'));
+    } else if (error.name === 'JsonWebTokenError') {
+      next(createError(401, 'Invalid token'));
+    } else {
+      next(error);
+    }
   }
 };
