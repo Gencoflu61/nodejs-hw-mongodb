@@ -23,7 +23,12 @@ const contactSchema = new mongoose.Schema(
       default: 'personal',
       required: true,
     },
+    userId: { 
+    type: String,        // Basit String
+    required: true       // ZORUNLU
+  }
   },
+     
   {
     timestamps: true,
   }
