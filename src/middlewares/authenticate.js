@@ -1,26 +1,26 @@
 import createError from 'http-errors';
 
 export const authenticate = async (req, res, next) => {
-  console.log('🔐 authenticate middleware ÇALIŞTI');
-  console.log('Authorization header:', req.headers.authorization);
-  
-  // TEST: Her zaman hata verelim ki çalıştığını görelim
-  return next(createError(401, 'Authenticate çalışıyor - Token gerekli'));
-  
-  /*
-  // Normal kod (şimdilik comment'te):
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return next(createError(401, 'Unauthorized - No token provided'));
+  try {
+    console.log('🔐 Authenticate middleware çalıştı');
+    console.log('Authorization Header:', req.headers.authorization);
+    
+    // ✅✅✅ TEST MODU: Geçici olarak her zaman başarılı olsun
+    // Bu sayede diğer kodları test edebiliriz
+    req.user = {
+      _id: 'test_user_id_123',  // Test kullanıcı ID'si
+      email: 'test@test.com'
+    };
+    
+    console.log('✅ Test user atandı:', req.user);
+    next(); // ✅ Bir sonraki middleware'e geç
+    
+    /*
+    // ❌❌❌ BUNU ŞİMDİLİK YORUM SATIRI YAPIN:
+    return next(createError(401, 'Authenticate çalışıyor - Token gerekli'));
+    */
+    
+  } catch (error) {
+    next(error);
   }
-  
-  // Geçici: Her token'ı kabul et (test için)
-  req.user = {
-    _id: 'test_user_id_from_token',
-    email: 'test@test.com'
-  };
-  
-  next();
-  */
 };
