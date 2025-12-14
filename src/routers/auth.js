@@ -1,26 +1,26 @@
 import express from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-
-// BASİT CONTROLLER'lar (şimdilik)
-const registerController = async (req, res) => {
-  res.status(201).json({
-    status: 201,
-    message: 'Successfully registered a user!',
-    data: { name: req.body.name, email: req.body.email }
-  });
-};
-
-const loginController = async (req, res) => {
-  res.status(200).json({
-    status: 200,
-    message: 'Successfully logged in an user!',
-    data: { accessToken: 'test_token_123' }
-  });
-};
+import {
+  registerController,
+  loginController,
+  refreshController,
+  logoutController
+} from '../controllers/auth.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { authSchema } from '../schemas/authSchemas.js';
 
 const router = express.Router();
 
-router.post('/register', ctrlWrapper(registerController));
-router.post('/login', ctrlWrapper(loginController));
+
+router.post('/register', validateBody(authSchema.register), ctrlWrapper(registerController));
+
+
+router.post('/login', validateBody(authSchema.login), ctrlWrapper(loginController));
+
+
+router.post('/refresh', ctrlWrapper(refreshController));
+
+
+router.post('/logout', ctrlWrapper(logoutController));
 
 export default router;

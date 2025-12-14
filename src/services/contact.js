@@ -1,11 +1,17 @@
 import Contact from "../db/models/Contact.js";
 
+
 export const getAllContacts = async (userId, queryParams = {}) => {
-  console.log('📞 getAllContacts - userId:', userId);
+  const {
+    page = 1,
+    perPage = 10,
+    sortBy = 'name',
+    sortOrder = 'asc',
+    type,
+    isFavourite,
+  } = queryParams;
   
-  const { page = 1, perPage = 10, sortBy = 'name', sortOrder = 'asc', type, isFavourite } = queryParams;
-  
-  const filter = { userId }; // Sadece bu kullanıcının contact'ları
+  const filter = { userId }; 
   
   if (type) filter.contactType = type;
   if (isFavourite !== undefined) filter.isFavourite = isFavourite === 'true';
