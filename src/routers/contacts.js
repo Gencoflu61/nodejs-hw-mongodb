@@ -14,10 +14,10 @@ import { authenticate } from '../middlewares/authenticate.js';
 
 const router = express.Router();
 
-router.get('/contacts', authenticate, ctrlWrapper(getAllContactsController));
-router.get('/contacts/:contactId', authenticate, ctrlWrapper(getContactByIdController));
-router.post('/contacts', authenticate, ctrlWrapper(createContactController));
-router.patch('/contacts/:contactId', authenticate, ctrlWrapper(updateContactController));
-router.delete('/contacts/:contactId', authenticate, ctrlWrapper(deleteContactController));
+router.get('/', authenticate, ctrlWrapper(getAllContactsController));
+router.get('/:contactId', authenticate, ctrlWrapper(getContactByIdController));
+router.post('/', authenticate, ctrlWrapper(createContactController));
+router.patch('/:contactId', authenticate, ctrlWrapper(updateContactController));
+router.delete('/:contactId', authenticate, ctrlWrapper(deleteContactController));
 
 export default router;
