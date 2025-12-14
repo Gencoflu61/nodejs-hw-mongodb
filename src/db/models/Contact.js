@@ -25,8 +25,7 @@ const contactSchema = new mongoose.Schema(
     },
     userId: { 
     type: String,        // Basit String
-    required: true,
-    index: true       // ZORUNLU
+    required: true,    // ZORUNLU
   }
   },
      

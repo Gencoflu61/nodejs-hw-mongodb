@@ -2,8 +2,7 @@
 
 // 1. Imports (en üstte)
 import createError from 'http-errors';
-import { getAllContacts, getContactById, createContact, updateContact, deleteContact } from '../services/contacts.js';
-
+import { getAllContacts, getContactById, createContact, updateContact, deleteContact } from '../services/contact.js';
 // 2. createContactController (EN ÖNEMLİ - EKSİK OLAN)
 export const createContactController = async (req, res) => {
   const userId = req.user ? req.user._id : 'test_user_id';
