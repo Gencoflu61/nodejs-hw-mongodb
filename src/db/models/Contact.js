@@ -24,7 +24,7 @@ const contactSchema = new mongoose.Schema({
     required: [true, 'Contact type is required'] 
   },
   userId: { 
-    type: mongoose.Schema.Types.ObjectId, 
+    type: String, 
     ref: 'User',
     required: true,
     index: true
